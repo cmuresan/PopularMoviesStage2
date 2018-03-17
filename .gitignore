@@ -7,3 +7,9 @@
 /build
 /captures
 .externalNativeBuild
+.idea/runConfigurations.xml
+.idea/misc.xml
+app/src/main/res/values/api-key.xml
+.idea/vcs.xml
+.idea/gradle.xml
+.idea/modules.xml
