@@ -42,7 +42,6 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline"
-        tools:text="TextView"
         android:layout_marginLeft="16dp" />
 
     <ScrollView
@@ -62,8 +61,7 @@
             android:id="@+id/movie_overview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            tools:text="TextView" />
+            android:textColor="@android:color/white" />
     </ScrollView>
 
     <TextView
@@ -73,8 +71,7 @@
         android:layout_marginBottom="16dp"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/movie_overview_scrollview"
-        tools:text="TextView" />
+        app:layout_constraintStart_toStartOf="@+id/movie_overview_scrollview" />
 
     <TextView
         android:id="@+id/movie_rating"
@@ -85,7 +82,6 @@
         android:layout_marginRight="16dp"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="TextView" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
