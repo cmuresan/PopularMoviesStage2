@@ -57,7 +57,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @Nullable
     private Movie getIntentData() {
         Intent movieIntent = getIntent();
-        if (movieIntent != null) {
+        if (movieIntent != null && movieIntent.hasExtra(EXTRA_MOVIE)) {
             Movie movie = (Movie) getIntent().getExtras().getSerializable(EXTRA_MOVIE);
             if (movie != null) {
                 return movie;

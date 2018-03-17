@@ -3,10 +3,7 @@
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
-.DS_Store
 /build
-/captures
-.externalNativeBuild
 .idea/runConfigurations.xml
 .idea/misc.xml
 app/src/main/res/values/api-key.xml

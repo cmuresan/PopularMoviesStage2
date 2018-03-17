@@ -20,7 +20,6 @@ import com.example.android.networkmodule.network.CallbackInterface;
 public class MainActivity extends AppCompatActivity {
 
     private static final int NUMBER_OF_COLUMNS = 3;
-    private static int nextPage = 1;
     private MoviesAdapter moviesAdapter;
     private boolean isPopularSelected = true;
     private ProgressDialog progressDialog;
@@ -59,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getMovies() {
         showProgressDialog();
+        int nextPage = 1;
         if (isPopularSelected) {
             new ApiImpl(getString(R.string.api_key)).getPopularMovies(nextPage, moviesApiResponseCallbackInterface);
         } else {
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.show();
     }
 
-    CallbackInterface<MoviesApiResponse> moviesApiResponseCallbackInterface = new CallbackInterface<MoviesApiResponse>() {
+    private final CallbackInterface<MoviesApiResponse> moviesApiResponseCallbackInterface = new CallbackInterface<MoviesApiResponse>() {
         @Override
         public void success(MoviesApiResponse response) {
             cancelProgressDialog();

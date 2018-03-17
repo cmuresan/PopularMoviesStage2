@@ -16,11 +16,11 @@ import retrofit2.Response;
  * Created by Cristian on 3/14/2018.
  */
 
-public abstract class RestCallback<T> implements Callback<T> {
+abstract class RestCallback<T> implements Callback<T> {
 
-    public abstract void success(T response);
+    protected abstract void success(T response);
 
-    public abstract void failure(String errorMessage, @Nullable String errorCode);
+    protected abstract void failure(String errorMessage, @Nullable String errorCode);
 
     @Override
     public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
