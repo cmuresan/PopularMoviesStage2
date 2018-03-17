@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="api_erorr">There was an error fetching the data. Please try again.</string>
+    <string name="poster_base_url">http://image.tmdb.org/t/p/%s%s</string>
+    <string name="movie_poster">Movie poster</string>
+    <string name="top_rated">Top Rated</string>
+    <string name="popular">Popular</string>
+    <string name="loading">Loading…</string>
+    <string name="movie_rating_template">%s/10</string>
+</resources>
