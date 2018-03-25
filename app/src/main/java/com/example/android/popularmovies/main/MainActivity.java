@@ -1,4 +1,4 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.main;
 
 import android.app.ProgressDialog;
 import android.graphics.drawable.Drawable;
@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.android.networkmodule.model.MoviesApiResponse;
 import com.example.android.networkmodule.network.ApiImpl;
 import com.example.android.networkmodule.network.CallbackInterface;
+import com.example.android.popularmovies.R;
 
 public class MainActivity extends AppCompatActivity {
 
