@@ -1,4 +1,4 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.android.networkmodule.model.Movie;
+import com.example.android.popularmovies.ConstantMoviePosterSizes;
+import com.example.android.popularmovies.R;
+import com.example.android.popularmovies.details.MovieDetailsActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -58,7 +61,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
         void bindData(final Movie movie) {
             String posterUrl = String.format(context.getString(R.string.poster_base_url),
-                    MoviePosterSizes.w342, movie.getPoster_path());
+                    ConstantMoviePosterSizes.getW342(), movie.getPoster_path());
             Picasso.with(context).load(posterUrl).into(movieThumbnail);
 
             movieThumbnail.setOnClickListener(new View.OnClickListener() {

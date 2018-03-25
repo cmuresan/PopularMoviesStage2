@@ -1,4 +1,4 @@
-package com.example.android.popularmovies;
+package com.example.android.popularmovies.details;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.networkmodule.model.Movie;
+import com.example.android.popularmovies.ConstantMoviePosterSizes;
+import com.example.android.popularmovies.R;
 import com.squareup.picasso.Picasso;
 
 public class MovieDetailsActivity extends AppCompatActivity {
@@ -45,7 +47,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     private void bindData(Movie movie) {
         String posterUrl = String.format(getString(R.string.poster_base_url),
-                MoviePosterSizes.original, movie.getPoster_path());
+                ConstantMoviePosterSizes.getOriginal(), movie.getPoster_path());
         Picasso.with(this).load(posterUrl).into(moviePoster);
         movieTitle.setText(movie.getOriginal_title());
         movieOverview.setText(movie.getOverview());
