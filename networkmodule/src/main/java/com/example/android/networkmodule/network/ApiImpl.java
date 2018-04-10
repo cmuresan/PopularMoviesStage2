@@ -1,6 +1,8 @@
 package com.example.android.networkmodule.network;
 
 import com.example.android.networkmodule.model.MoviesApiResponse;
+import com.example.android.networkmodule.model.ReviewsApiResponse;
+import com.example.android.networkmodule.model.VideosApiResponse;
 
 import java.util.concurrent.TimeUnit;
 
@@ -55,6 +57,18 @@ public class ApiImpl implements ApiInterface {
     @Override
     public void getTopRatedMovies(int page, CallbackInterface<MoviesApiResponse> callback) {
         Call<MoviesApiResponse> call = apiService.getTopRatedMovies(page);
+        call.enqueue(new RestCallbackImpl<>(callback));
+    }
+
+    @Override
+    public void getVideosById(int movieId, CallbackInterface<VideosApiResponse> callback) {
+        Call<VideosApiResponse> call = apiService.getVideosById(movieId);
+        call.enqueue(new RestCallbackImpl<>(callback));
+    }
+
+    @Override
+    public void getReviewsById(int movieId, CallbackInterface<ReviewsApiResponse> callback) {
+        Call<ReviewsApiResponse> call = apiService.getReviewsById(movieId);
         call.enqueue(new RestCallbackImpl<>(callback));
     }
 }

@@ -4,11 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-/**
- * Created by Cristian on 3/11/2018.
- */
-
-public class MoviesApiResponse {
+public class ReviewsApiResponse {
     @SerializedName("id")
     private int id;
     @SerializedName("page")
@@ -18,7 +14,7 @@ public class MoviesApiResponse {
     @SerializedName("total_pages")
     private int totalPages;
     @SerializedName("results")
-    private ArrayList<Movie> results;
+    private ArrayList<Review> results;
 
     public int getPage() {
         return page;
@@ -28,11 +24,11 @@ public class MoviesApiResponse {
         this.page = page;
     }
 
-    public ArrayList<Movie> getResults() {
+    public ArrayList<Review> getResults() {
         return results;
     }
 
-    public void setResults(ArrayList<Movie> results) {
+    public void setResults(ArrayList<Review> results) {
         this.results = results;
     }
 }

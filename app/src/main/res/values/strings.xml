@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Popular Movies</string>
     <string name="api_erorr">There was an error fetching the data. Please try again.</string>
+    <string name="videos_erorr">There was an error fetching the videos. Please try again.</string>
+    <string name="reviews_erorr">There was an error fetching the reviews. Please try again.</string>
     <string name="image_error">There was an error fetching the movie poster.</string>
     <string name="poster_base_url">http://image.tmdb.org/t/p/%s%s</string>
     <string name="movie_poster">Movie poster</string>

@@ -4,11 +4,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.networkmodule.model.Movie;
+import com.example.android.networkmodule.model.ReviewsApiResponse;
+import com.example.android.networkmodule.model.VideosApiResponse;
+import com.example.android.networkmodule.network.ApiImpl;
+import com.example.android.networkmodule.network.ApiInterface;
+import com.example.android.networkmodule.network.CallbackInterface;
 import com.example.android.popularmovies.ConstantMoviePosterSizes;
 import com.example.android.popularmovies.R;
 import com.squareup.picasso.Picasso;
@@ -58,7 +64,37 @@ public class MovieDetailsActivity extends AppCompatActivity {
         movieReleaseDate.setText(movie.getReleaseDate());
         String rating = String.format(getString(R.string.movie_rating_template), String.valueOf(movie.getVoteAverage()));
         movieRating.setText(rating);
+
+        ApiInterface apiInterface = new ApiImpl(getString(R.string.api_key));
+        apiInterface.getVideosById(movie.getId(), videosApiResponseCallbackInterface);
+
+        apiInterface.getReviewsById(movie.getId(), reviewsApiResponseCallbackInterface);
     }
+
+    private static final String TAG = "MovieDetailsActivity";
+    private final CallbackInterface<VideosApiResponse> videosApiResponseCallbackInterface = new CallbackInterface<VideosApiResponse>() {
+        @Override
+        public void success(VideosApiResponse response) {
+            Log.d(TAG, "success: " + response.getResults().size());
+        }
+
+        @Override
+        public void failure(String errorMessage, String errorCode) {
+            Toast.makeText(MovieDetailsActivity.this, getString(R.string.videos_erorr), Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private final CallbackInterface<ReviewsApiResponse> reviewsApiResponseCallbackInterface = new CallbackInterface<ReviewsApiResponse>() {
+        @Override
+        public void success(ReviewsApiResponse response) {
+            Log.d(TAG, "success: " + response.getResults().size());
+        }
+
+        @Override
+        public void failure(String errorMessage, String errorCode) {
+            Toast.makeText(MovieDetailsActivity.this, getString(R.string.reviews_erorr), Toast.LENGTH_SHORT).show();
+        }
+    };
 
     @Nullable
     private Movie getIntentData() {
