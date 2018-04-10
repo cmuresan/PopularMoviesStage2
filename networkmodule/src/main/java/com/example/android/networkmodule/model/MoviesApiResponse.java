@@ -1,5 +1,7 @@
 package com.example.android.networkmodule.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
@@ -8,8 +10,10 @@ import java.util.ArrayList;
 
 public class MoviesApiResponse {
     private int page;
-    private int total_results;
-    private int total_pages;
+    @SerializedName("total_results")
+    private int totalResults;
+    @SerializedName("total_pages")
+    private int totalPages;
     private ArrayList<Movie> results;
 
     public int getPage() {

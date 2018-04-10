@@ -1,5 +1,7 @@
 package com.example.android.networkmodule.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -7,39 +9,53 @@ import java.io.Serializable;
  */
 
 public class Movie implements Serializable{
-    private int vote_count;
+    @SerializedName("vote_count")
+    private int voteCount;
+    @SerializedName("id")
     private int id;
+    @SerializedName("video")
     private boolean video;
-    private double vote_average;
+    @SerializedName("vote_average")
+    private double voteAverage;
+    @SerializedName("title")
     private String title;
+    @SerializedName("popularity")
     private double popularity;
-    private String poster_path;
-    private String original_language;
-    private String original_title;
-    private int[] genre_ids;
-    private String backdrop_path;
+    @SerializedName("poster_path")
+    private String posterPath;
+    @SerializedName("original_language")
+    private String originalLanguage;
+    @SerializedName("original_title")
+    private String originalTitle;
+    @SerializedName("genre_ids")
+    private int[] genreIds;
+    @SerializedName("backdrop_path")
+    private String backdropPath;
+    @SerializedName("adult")
     private boolean adult;
+    @SerializedName("overview")
     private String overview;
-    private String release_date;
+    @SerializedName("release_date")
+    private String releaseDate;
 
-    public double getVote_average() {
-        return vote_average;
+    public double getVoteAverage() {
+        return voteAverage;
     }
 
-    public String getPoster_path() {
-        return poster_path;
+    public String getPosterPath() {
+        return posterPath;
     }
 
-    public String getOriginal_title() {
-        return original_title;
+    public String getOriginalTitle() {
+        return originalTitle;
     }
 
     public String getOverview() {
         return overview;
     }
 
-    public String getRelease_date() {
-        return release_date;
+    public String getReleaseDate() {
+        return releaseDate;
     }
 
 }
