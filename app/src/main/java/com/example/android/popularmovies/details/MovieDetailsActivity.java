@@ -37,10 +37,21 @@ public class MovieDetailsActivity extends AppCompatActivity {
         if (movie != null) {
             initViews();
             bindData(movie);
+            getVideos(movie.getId());
+            getReviews(movie.getId());
         } else {
             Toast.makeText(this, getString(R.string.api_erorr), Toast.LENGTH_SHORT).show();
         }
+    }
 
+    private void getVideos(int id) {
+        ApiInterface apiInterface = new ApiImpl(getString(R.string.api_key));
+        apiInterface.getVideosById(id, videosApiResponseCallbackInterface);
+    }
+
+    private void getReviews(int id) {
+        ApiInterface apiInterface = new ApiImpl(getString(R.string.api_key));
+        apiInterface.getReviewsById(id, reviewsApiResponseCallbackInterface);
     }
 
     private void initViews() {
@@ -64,11 +75,18 @@ public class MovieDetailsActivity extends AppCompatActivity {
         movieReleaseDate.setText(movie.getReleaseDate());
         String rating = String.format(getString(R.string.movie_rating_template), String.valueOf(movie.getVoteAverage()));
         movieRating.setText(rating);
+    }
 
-        ApiInterface apiInterface = new ApiImpl(getString(R.string.api_key));
-        apiInterface.getVideosById(movie.getId(), videosApiResponseCallbackInterface);
-
-        apiInterface.getReviewsById(movie.getId(), reviewsApiResponseCallbackInterface);
+    @Nullable
+    private Movie getIntentData() {
+        Intent movieIntent = getIntent();
+        if (movieIntent != null && movieIntent.hasExtra(EXTRA_MOVIE)) {
+            Movie movie = getIntent().getExtras().getParcelable(EXTRA_MOVIE);
+            if (movie != null) {
+                return movie;
+            }
+        }
+        return null;
     }
 
     private static final String TAG = "MovieDetailsActivity";
@@ -95,16 +113,4 @@ public class MovieDetailsActivity extends AppCompatActivity {
             Toast.makeText(MovieDetailsActivity.this, getString(R.string.reviews_erorr), Toast.LENGTH_SHORT).show();
         }
     };
-
-    @Nullable
-    private Movie getIntentData() {
-        Intent movieIntent = getIntent();
-        if (movieIntent != null && movieIntent.hasExtra(EXTRA_MOVIE)) {
-            Movie movie = getIntent().getExtras().getParcelable(EXTRA_MOVIE);
-            if (movie != null) {
-                return movie;
-            }
-        }
-        return null;
-    }
 }
