@@ -48,7 +48,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private void bindData(Movie movie) {
         String posterUrl = String.format(getString(R.string.poster_base_url),
                 ConstantMoviePosterSizes.getOriginal(), movie.getPosterPath());
-        Picasso.with(this).load(posterUrl).into(moviePoster);
+        Picasso.with(this)
+                .load(posterUrl)
+                .placeholder(R.drawable.ic_movie_placeholder)
+                .error(R.string.image_error)
+                .into(moviePoster);
         movieTitle.setText(movie.getOriginalTitle());
         movieOverview.setText(movie.getOverview());
         movieReleaseDate.setText(movie.getReleaseDate());
