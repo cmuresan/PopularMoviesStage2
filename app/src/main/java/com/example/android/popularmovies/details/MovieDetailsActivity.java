@@ -30,9 +30,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private ImageView moviePoster;
     private TextView movieTitle;
     private CollapsingToolbarLayout toolbarLayout;
-//    private TextView movieOverview;
-//    private TextView movieReleaseDate;
-//    private TextView movieRating;
+    private TextView movieOverview;
+    private TextView movieReleaseDate;
+    private TextView movieRating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +76,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
         moviePoster = findViewById(R.id.movie_poster);
         movieTitle = findViewById(R.id.movie_title);
         toolbarLayout = findViewById(R.id.toolbar_layout);
-//        movieOverview = findViewById(R.id.movie_overview);
-//        movieReleaseDate = findViewById(R.id.movie_release_date);
-//        movieRating = findViewById(R.id.movie_rating);
+        movieOverview = findViewById(R.id.movie_overview);
+        movieReleaseDate = findViewById(R.id.movie_release_date);
+        movieRating = findViewById(R.id.movie_rating);
     }
 
     private void bindData(Movie movie) {
@@ -89,13 +89,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 .placeholder(R.drawable.ic_movie_placeholder)
                 .error(R.string.image_error)
                 .into(moviePoster);
-//        movieTitle.setText(movie.getOriginalTitle());
         toolbarLayout.setTitleEnabled(true);
         toolbarLayout.setTitle(movie.getOriginalTitle());
-//        movieOverview.setText(movie.getOverview());
-//        movieReleaseDate.setText(movie.getReleaseDate());
-//        String rating = String.format(getString(R.string.movie_rating_template), String.valueOf(movie.getVoteAverage()));
-//        movieRating.setText(rating);
+        movieOverview.setText(movie.getOverview());
+        movieReleaseDate.setText(movie.getReleaseDate());
+        String rating = String.format(getString(R.string.movie_rating_template), String.valueOf(movie.getVoteAverage()));
+        movieRating.setText(rating);
     }
 
     @Nullable

@@ -5,13 +5,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".details.ScrollingActivity"
-    tools:showIn="@layout/activity_scrolling">
+    tools:context=".details.ScrollingActivity">
+    <!--tools:showIn="@layout/activity_scrolling"-->
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="@string/large_text" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_default"
+        android:padding="@dimen/margin_default">
 
+        <TextView
+            android:id="@+id/movie_overview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/movie_release_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:textColor="@android:color/black"
+            app:layout_constraintStart_toStartOf="@+id/movie_overview"
+            app:layout_constraintTop_toBottomOf="@+id/movie_overview" />
+
+        <TextView
+            android:id="@+id/movie_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_default"
+            android:layout_marginBottom="@dimen/margin_default"
+            android:layout_marginEnd="@dimen/margin_default"
+            android:layout_marginRight="@dimen/margin_default"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toEndOf="@+id/movie_overview"
+            app:layout_constraintTop_toBottomOf="@+id/movie_overview" />
+    </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>
