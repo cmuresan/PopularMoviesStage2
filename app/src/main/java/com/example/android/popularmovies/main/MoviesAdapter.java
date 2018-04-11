@@ -13,7 +13,6 @@ import com.example.android.networkmodule.model.Movie;
 import com.example.android.popularmovies.ConstantMoviePosterSizes;
 import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.details.MovieDetailsActivity;
-import com.example.android.popularmovies.details.ScrollingActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -79,7 +78,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     }
 
     private void openMovieDetails(Movie movie) {
-        Intent intent = new Intent(context, ScrollingActivity.class);
+        Intent intent = new Intent(context, MovieDetailsActivity.class);
         intent.putExtra(MovieDetailsActivity.EXTRA_MOVIE, movie);
         context.startActivity(intent);
     }

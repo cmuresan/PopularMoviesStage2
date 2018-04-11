@@ -3,8 +3,13 @@ package com.example.android.popularmovies.details;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,14 +29,27 @@ public class MovieDetailsActivity extends AppCompatActivity {
     public static final String EXTRA_MOVIE = "MovieDetailsActivity.EXTRA_MOVIE";
     private ImageView moviePoster;
     private TextView movieTitle;
-    private TextView movieOverview;
-    private TextView movieReleaseDate;
-    private TextView movieRating;
+    private CollapsingToolbarLayout toolbarLayout;
+//    private TextView movieOverview;
+//    private TextView movieReleaseDate;
+//    private TextView movieRating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_details);
+        setContentView(R.layout.activity_scrolling);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
         Movie movie = getIntentData();
         if (movie != null) {
@@ -57,9 +75,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private void initViews() {
         moviePoster = findViewById(R.id.movie_poster);
         movieTitle = findViewById(R.id.movie_title);
-        movieOverview = findViewById(R.id.movie_overview);
-        movieReleaseDate = findViewById(R.id.movie_release_date);
-        movieRating = findViewById(R.id.movie_rating);
+        toolbarLayout = findViewById(R.id.toolbar_layout);
+//        movieOverview = findViewById(R.id.movie_overview);
+//        movieReleaseDate = findViewById(R.id.movie_release_date);
+//        movieRating = findViewById(R.id.movie_rating);
     }
 
     private void bindData(Movie movie) {
@@ -70,11 +89,13 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 .placeholder(R.drawable.ic_movie_placeholder)
                 .error(R.string.image_error)
                 .into(moviePoster);
-        movieTitle.setText(movie.getOriginalTitle());
-        movieOverview.setText(movie.getOverview());
-        movieReleaseDate.setText(movie.getReleaseDate());
-        String rating = String.format(getString(R.string.movie_rating_template), String.valueOf(movie.getVoteAverage()));
-        movieRating.setText(rating);
+//        movieTitle.setText(movie.getOriginalTitle());
+        toolbarLayout.setTitleEnabled(true);
+        toolbarLayout.setTitle(movie.getOriginalTitle());
+//        movieOverview.setText(movie.getOverview());
+//        movieReleaseDate.setText(movie.getReleaseDate());
+//        String rating = String.format(getString(R.string.movie_rating_template), String.valueOf(movie.getVoteAverage()));
+//        movieRating.setText(rating);
     }
 
     @Nullable
