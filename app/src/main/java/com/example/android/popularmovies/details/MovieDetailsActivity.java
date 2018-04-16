@@ -1,17 +1,18 @@
 package com.example.android.popularmovies.details;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.networkmodule.model.Movie;
@@ -22,22 +23,22 @@ import com.example.android.networkmodule.network.ApiInterface;
 import com.example.android.networkmodule.network.CallbackInterface;
 import com.example.android.popularmovies.ConstantMoviePosterSizes;
 import com.example.android.popularmovies.R;
+import com.example.android.popularmovies.databinding.ActivityMovieDetailsBinding;
 import com.squareup.picasso.Picasso;
 
 public class MovieDetailsActivity extends AppCompatActivity {
 
     public static final String EXTRA_MOVIE = "MovieDetailsActivity.EXTRA_MOVIE";
-    private ImageView moviePoster;
-    private TextView movieTitle;
-    private CollapsingToolbarLayout toolbarLayout;
-    private TextView movieOverview;
-    private TextView movieReleaseDate;
-    private TextView movieRating;
+    private ActivityMovieDetailsBinding detailsBinding;
+    private VideosAdapter videosAdapter;
+    private ReviewsAdapter reviewsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scrolling);
+        setContentView(R.layout.activity_movie_details);
+
+        detailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_movie_details);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -53,12 +54,47 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         Movie movie = getIntentData();
         if (movie != null) {
-            initViews();
+            setupVideosRecyclerView();
+            setupReviewsRecyclerView();
             bindData(movie);
             getVideos(movie.getId());
             getReviews(movie.getId());
         } else {
             Toast.makeText(this, getString(R.string.api_erorr), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setupVideosRecyclerView() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        detailsBinding.content.videosRecyclerView.setLayoutManager(linearLayoutManager);
+        detailsBinding.content.videosRecyclerView.setHasFixedSize(true);
+
+        videosAdapter = new VideosAdapter(this);
+        detailsBinding.content.videosRecyclerView.setAdapter(videosAdapter);
+
+
+        DividerItemDecoration verticalItemDecorator = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        Drawable divider = ContextCompat.getDrawable(this, R.drawable.divider);
+        if (divider != null) {
+            verticalItemDecorator.setDrawable(divider);
+            detailsBinding.content.videosRecyclerView.addItemDecoration(verticalItemDecorator);
+        }
+    }
+
+    private void setupReviewsRecyclerView() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        detailsBinding.content.reviewsRecyclerView.setLayoutManager(linearLayoutManager);
+        detailsBinding.content.reviewsRecyclerView.setHasFixedSize(true);
+
+        reviewsAdapter = new ReviewsAdapter(this);
+        detailsBinding.content.reviewsRecyclerView.setAdapter(reviewsAdapter);
+
+
+        DividerItemDecoration verticalItemDecorator = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        Drawable divider = ContextCompat.getDrawable(this, R.drawable.divider);
+        if (divider != null) {
+            verticalItemDecorator.setDrawable(divider);
+            detailsBinding.content.reviewsRecyclerView.addItemDecoration(verticalItemDecorator);
         }
     }
 
@@ -72,15 +108,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         apiInterface.getReviewsById(id, reviewsApiResponseCallbackInterface);
     }
 
-    private void initViews() {
-        moviePoster = findViewById(R.id.movie_poster);
-        movieTitle = findViewById(R.id.movie_title);
-        toolbarLayout = findViewById(R.id.toolbar_layout);
-        movieOverview = findViewById(R.id.movie_overview);
-        movieReleaseDate = findViewById(R.id.movie_release_date);
-        movieRating = findViewById(R.id.movie_rating);
-    }
-
     private void bindData(Movie movie) {
         String posterUrl = String.format(getString(R.string.poster_base_url),
                 ConstantMoviePosterSizes.getOriginal(), movie.getPosterPath());
@@ -88,13 +115,13 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 .load(posterUrl)
                 .placeholder(R.drawable.ic_movie_placeholder)
                 .error(R.string.image_error)
-                .into(moviePoster);
-        toolbarLayout.setTitleEnabled(true);
-        toolbarLayout.setTitle(movie.getOriginalTitle());
-        movieOverview.setText(movie.getOverview());
-        movieReleaseDate.setText(movie.getReleaseDate());
+                .into(detailsBinding.moviePoster);
+        detailsBinding.toolbarLayout.setTitleEnabled(true);
+        detailsBinding.toolbarLayout.setTitle(movie.getOriginalTitle());
+        detailsBinding.content.movieOverview.setText(movie.getOverview());
+        detailsBinding.content.movieReleaseDate.setText(movie.getReleaseDate());
         String rating = String.format(getString(R.string.movie_rating_template), String.valueOf(movie.getVoteAverage()));
-        movieRating.setText(rating);
+        detailsBinding.content.movieRating.setText(rating);
     }
 
     @Nullable
@@ -113,11 +140,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private final CallbackInterface<VideosApiResponse> videosApiResponseCallbackInterface = new CallbackInterface<VideosApiResponse>() {
         @Override
         public void success(VideosApiResponse response) {
-            Log.d(TAG, "success: " + response.getResults().size());
+            detailsBinding.content.videosHeader.setVisibility(View.VISIBLE);
+            detailsBinding.content.videosRecyclerView.setVisibility(View.VISIBLE);
+            videosAdapter.setVideos(response.getResults());
         }
 
         @Override
         public void failure(String errorMessage, String errorCode) {
+            detailsBinding.content.videosHeader.setVisibility(View.GONE);
+            detailsBinding.content.videosRecyclerView.setVisibility(View.GONE);
             Toast.makeText(MovieDetailsActivity.this, getString(R.string.videos_erorr), Toast.LENGTH_SHORT).show();
         }
     };
@@ -125,11 +156,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private final CallbackInterface<ReviewsApiResponse> reviewsApiResponseCallbackInterface = new CallbackInterface<ReviewsApiResponse>() {
         @Override
         public void success(ReviewsApiResponse response) {
-            Log.d(TAG, "success: " + response.getResults().size());
+            detailsBinding.content.reviewsHeader.setVisibility(View.VISIBLE);
+            detailsBinding.content.reviewsRecyclerView.setVisibility(View.VISIBLE);
+            reviewsAdapter.setReviews(response.getResults());
         }
 
         @Override
         public void failure(String errorMessage, String errorCode) {
+            detailsBinding.content.reviewsHeader.setVisibility(View.GONE);
+            detailsBinding.content.reviewsRecyclerView.setVisibility(View.GONE);
             Toast.makeText(MovieDetailsActivity.this, getString(R.string.reviews_erorr), Toast.LENGTH_SHORT).show();
         }
     };

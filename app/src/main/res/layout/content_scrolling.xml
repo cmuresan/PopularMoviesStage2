@@ -1,48 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".details.ScrollingActivity">
-    <!--tools:showIn="@layout/activity_scrolling"-->
+<layout>
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/margin_default"
-        android:padding="@dimen/margin_default">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".details.ScrollingActivity"
+        tools:showIn="@layout/activity_movie_details">
 
-        <TextView
-            android:id="@+id/movie_overview"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/movie_release_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/margin_default"
-            android:layout_marginBottom="@dimen/margin_default"
-            android:textColor="@android:color/black"
-            app:layout_constraintStart_toStartOf="@+id/movie_overview"
-            app:layout_constraintTop_toBottomOf="@+id/movie_overview" />
+            android:padding="@dimen/margin_default">
 
-        <TextView
-            android:id="@+id/movie_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_default"
-            android:layout_marginBottom="@dimen/margin_default"
-            android:layout_marginEnd="@dimen/margin_default"
-            android:layout_marginRight="@dimen/margin_default"
-            android:textColor="@android:color/black"
-            app:layout_constraintEnd_toEndOf="@+id/movie_overview"
-            app:layout_constraintTop_toBottomOf="@+id/movie_overview" />
-    </android.support.constraint.ConstraintLayout>
-</android.support.v4.widget.NestedScrollView>
+            <TextView
+                android:id="@+id/movie_overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/movie_release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_default"
+                android:layout_marginTop="@dimen/margin_default"
+                android:textColor="@android:color/black"
+                app:layout_constraintStart_toStartOf="@+id/movie_overview"
+                app:layout_constraintTop_toBottomOf="@+id/movie_overview"
+                tools:text="Release date" />
+
+            <TextView
+                android:id="@+id/movie_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_default"
+                android:layout_marginEnd="@dimen/margin_default"
+                android:layout_marginRight="@dimen/margin_default"
+                android:layout_marginTop="@dimen/margin_default"
+                android:textColor="@android:color/black"
+                app:layout_constraintEnd_toEndOf="@+id/movie_overview"
+                app:layout_constraintTop_toBottomOf="@+id/movie_overview"
+                tools:text="Ratings" />
+
+            <TextView
+                android:id="@+id/videos_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default"
+                android:gravity="start|center_vertical"
+                android:text="@string/videos"
+                android:textColor="@android:color/black"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movie_release_date" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/videos_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/videos_section_height"
+                android:layout_marginTop="@dimen/margin_default"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/videos_header" />
+
+            <TextView
+                android:id="@+id/reviews_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default"
+                android:gravity="start|center_vertical"
+                android:text="@string/reviews"
+                android:textColor="@android:color/black"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/videos_recycler_view" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/reviews_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/videos_section_height"
+                android:layout_marginTop="@dimen/margin_default"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/reviews_header" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v4.widget.NestedScrollView>
+</layout>

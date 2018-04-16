@@ -2,7 +2,7 @@ package com.example.android.networkmodule.model;
 
 import com.google.gson.annotations.SerializedName;
 
-class Video {
+public class Video {
     @SerializedName("id")
     private String id;
     @SerializedName("key")
