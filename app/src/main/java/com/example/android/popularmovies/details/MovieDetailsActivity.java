@@ -73,11 +73,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
         detailsBinding.content.videosRecyclerView.setAdapter(videosAdapter);
 
 
-        DividerItemDecoration verticalItemDecorator = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        Drawable divider = ContextCompat.getDrawable(this, R.drawable.divider);
+        DividerItemDecoration horizontalItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL);
+        Drawable divider = ContextCompat.getDrawable(this, R.drawable.space_divider);
         if (divider != null) {
-            verticalItemDecorator.setDrawable(divider);
-            detailsBinding.content.videosRecyclerView.addItemDecoration(verticalItemDecorator);
+            horizontalItemDecoration.setDrawable(divider);
+            detailsBinding.content.videosRecyclerView.addItemDecoration(horizontalItemDecoration);
         }
     }
 
@@ -90,11 +90,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
         detailsBinding.content.reviewsRecyclerView.setAdapter(reviewsAdapter);
 
 
-        DividerItemDecoration verticalItemDecorator = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        Drawable divider = ContextCompat.getDrawable(this, R.drawable.divider);
+        DividerItemDecoration horizontalItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL);
+        Drawable divider = ContextCompat.getDrawable(this, R.drawable.space_divider);
         if (divider != null) {
-            verticalItemDecorator.setDrawable(divider);
-            detailsBinding.content.reviewsRecyclerView.addItemDecoration(verticalItemDecorator);
+            horizontalItemDecoration.setDrawable(divider);
+            detailsBinding.content.reviewsRecyclerView.addItemDecoration(horizontalItemDecoration);
         }
     }
 
