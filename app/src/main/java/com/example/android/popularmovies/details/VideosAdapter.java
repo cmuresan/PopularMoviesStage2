@@ -1,6 +1,8 @@
 package com.example.android.popularmovies.details;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,7 +38,7 @@ class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull VideosAdapter.ViewHolder holder, int position) {
-        holder.bindData(videos.get(position).getName());
+        holder.bindData(videos.get(position));
     }
 
     @Override
@@ -52,8 +54,15 @@ class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder> {
             title = itemView.findViewById(R.id.video_title);
         }
 
-        void bindData(String title) {
-            this.title.setText(title);
+        void bindData(final Video video) {
+            title.setText(video.getName());
+            title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + video.getKey()));
+                    context.startActivity(webIntent);
+                }
+            });
         }
     }
 }
