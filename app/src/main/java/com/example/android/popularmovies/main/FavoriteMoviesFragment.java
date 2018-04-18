@@ -56,6 +56,11 @@ public class FavoriteMoviesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         setupRecyclerView(getContext(), view);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         getMovies();
     }
 
