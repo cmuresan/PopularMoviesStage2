@@ -6,7 +6,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,7 +23,6 @@ import com.example.android.popularmovies.R;
 import com.example.android.popularmovies.data.FavoriteMoviesContract;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class FavoriteMoviesFragment extends Fragment {
@@ -94,11 +92,12 @@ public class FavoriteMoviesFragment extends Fragment {
             Toast.makeText(getContext(), getContext().getString(R.string.api_erorr), Toast.LENGTH_SHORT).show();
             return;
         }
-        List<Movie> movies = getMoviesFromCursor(cursor);
+        ArrayList<Movie> movies = getMoviesFromCursor(cursor);
+        moviesAdapter.setMovies(movies);
     }
 
-    private List<Movie> getMoviesFromCursor(Cursor cursor) {
-        List<Movie> movies = new ArrayList<>();
+    private ArrayList<Movie> getMoviesFromCursor(Cursor cursor) {
+        ArrayList<Movie> movies = new ArrayList<>();
 
         int movieIdIndex = cursor.getColumnIndex(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_ID);
         int titleIndex = cursor.getColumnIndex(FavoriteMoviesContract.MovieEntry.COLUMN_TITLE);
@@ -113,11 +112,13 @@ public class FavoriteMoviesFragment extends Fragment {
             String title = cursor.getString(titleIndex);
             String poster = cursor.getString(posterIndex);
             String synopsis = cursor.getString(synopsisIndex);
-            String rating = cursor.getString(ratingIndex);
+            Double rating = cursor.getDouble(ratingIndex);
             String releaseDate = cursor.getString(releaseDateIndex);
 
-            Movie movie = new Movie();
-
+            Movie movie = new Movie(movieId, title, poster, synopsis, rating, releaseDate);
+            movies.add(movie);
+            cursor.moveToNext();
         }
+        return movies;
     }
 }

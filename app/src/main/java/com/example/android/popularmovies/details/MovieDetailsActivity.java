@@ -2,12 +2,12 @@ package com.example.android.popularmovies.details;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -35,6 +35,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private ActivityMovieDetailsBinding detailsBinding;
     private VideosAdapter videosAdapter;
     private ReviewsAdapter reviewsAdapter;
+    private boolean isMovieFav = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +47,21 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        Movie movie = getIntentData();
+        if (movie != null) {
+            handleFab(movie.getId());
+            setupVideosRecyclerView();
+            setupReviewsRecyclerView();
+            bindData(movie);
+            getVideos(movie.getId());
+            getReviews(movie.getId());
+        } else {
+            Toast.makeText(this, getString(R.string.api_erorr), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void handleFab(int id) {
+        detailsBinding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Movie movie = getIntentData();
@@ -56,33 +70,62 @@ public class MovieDetailsActivity extends AppCompatActivity {
                             .setAction("Action", null).show();
                     return;
                 }
+                if (isMovieFav) {
+                    Uri uri = FavoriteMoviesContract.MovieEntry.CONTENT_URI;
+                    uri = uri.buildUpon().appendPath(String.valueOf(movie.getId())).build();
 
-                ContentValues contentValues = new ContentValues();
-                contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_ID, movie.getId());
-                contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_TITLE, movie.getOriginalTitle());
-                contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_POSTER, getPosterUrl(movie.getPosterPath()));
-                contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_SYNOPSIS, movie.getOverview());
-                contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_RATING, detailsBinding.content.movieRating.getText().toString());
-                contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
+                    int id = getContentResolver().delete(uri, null, null);
+                    if (id != 0) {
+                        isMovieFav = false;
+                        Snackbar.make(view, "Deleted", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }else {
+                        isMovieFav = true;
+                    }
+                } else {
 
-                Uri uri = getContentResolver().insert(FavoriteMoviesContract.MovieEntry.CONTENT_URI, contentValues);
 
-                if (uri != null) {
-                    Snackbar.make(view, "Saved", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_ID, movie.getId());
+                    contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_TITLE, movie.getOriginalTitle());
+                    contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_POSTER, movie.getPosterPath());
+                    contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_SYNOPSIS, movie.getOverview());
+                    contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_RATING, movie.getVoteAverage());
+                    contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
+
+                    Uri uri = getContentResolver().insert(FavoriteMoviesContract.MovieEntry.CONTENT_URI, contentValues);
+
+                    if (uri != null) {
+                        Snackbar.make(view, "Saved", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                        isMovieFav = true;
+                    }
                 }
+                setFabImageResource();
             }
         });
 
-        Movie movie = getIntentData();
-        if (movie != null) {
-            setupVideosRecyclerView();
-            setupReviewsRecyclerView();
-            bindData(movie);
-            getVideos(movie.getId());
-            getReviews(movie.getId());
+        Uri uri = FavoriteMoviesContract.MovieEntry.CONTENT_URI;
+        uri = uri.buildUpon().appendPath(String.valueOf(id)).build();
+
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        handleFabButton(cursor);
+    }
+
+    private void handleFabButton(Cursor cursor) {
+        if (cursor.getCount() > 0) {
+            isMovieFav = true;
         } else {
-            Toast.makeText(this, getString(R.string.api_erorr), Toast.LENGTH_SHORT).show();
+            isMovieFav = false;
+        }
+        setFabImageResource();
+    }
+
+    private void setFabImageResource() {
+        if (isMovieFav) {
+            detailsBinding.fab.setImageResource(android.R.drawable.star_big_on);
+        } else {
+            detailsBinding.fab.setImageResource(android.R.drawable.star_big_off);
         }
     }
 

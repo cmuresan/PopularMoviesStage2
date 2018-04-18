@@ -21,7 +21,7 @@ class MoviesDbHelper extends SQLiteOpenHelper {
                 FavoriteMoviesContract.MovieEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
                 FavoriteMoviesContract.MovieEntry.COLUMN_POSTER + " TEXT NOT NULL, " +
                 FavoriteMoviesContract.MovieEntry.COLUMN_SYNOPSIS + " TEXT NOT NULL, " +
-                FavoriteMoviesContract.MovieEntry.COLUMN_RATING + " TEXT NOT NULL, " +
+                FavoriteMoviesContract.MovieEntry.COLUMN_RATING + " DOUBLE NOT NULL, " +
                 FavoriteMoviesContract.MovieEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL);";
         db.execSQL(CREATE_TABLE);
     }
