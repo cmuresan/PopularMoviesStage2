@@ -1,8 +1,10 @@
 package com.example.android.popularmovies.details;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +25,7 @@ import com.example.android.networkmodule.network.ApiInterface;
 import com.example.android.networkmodule.network.CallbackInterface;
 import com.example.android.popularmovies.ConstantMoviePosterSizes;
 import com.example.android.popularmovies.R;
+import com.example.android.popularmovies.data.FavoriteMoviesContract;
 import com.example.android.popularmovies.databinding.ActivityMovieDetailsBinding;
 import com.squareup.picasso.Picasso;
 
@@ -47,8 +50,27 @@ public class MovieDetailsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Movie movie = getIntentData();
+                if (movie == null) {
+                    Snackbar.make(view, "Could not save movie", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    return;
+                }
+
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_MOVIE_ID, movie.getId());
+                contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_TITLE, movie.getOriginalTitle());
+                contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_POSTER, getPosterUrl(movie.getPosterPath()));
+                contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_SYNOPSIS, movie.getOverview());
+                contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_RATING, detailsBinding.content.movieRating.getText().toString());
+                contentValues.put(FavoriteMoviesContract.MovieEntry.COLUMN_RELEASE_DATE, movie.getReleaseDate());
+
+                Uri uri = getContentResolver().insert(FavoriteMoviesContract.MovieEntry.CONTENT_URI, contentValues);
+
+                if (uri != null) {
+                    Snackbar.make(view, "Saved", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
             }
         });
 
@@ -109,8 +131,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     }
 
     private void bindData(Movie movie) {
-        String posterUrl = String.format(getString(R.string.poster_base_url),
-                ConstantMoviePosterSizes.getOriginal(), movie.getPosterPath());
+        String posterUrl = getPosterUrl(movie.getPosterPath());
         Picasso.with(this)
                 .load(posterUrl)
                 .placeholder(R.drawable.ic_movie_placeholder)
@@ -122,6 +143,11 @@ public class MovieDetailsActivity extends AppCompatActivity {
         detailsBinding.content.movieReleaseDate.setText(movie.getReleaseDate());
         String rating = String.format(getString(R.string.movie_rating_template), String.valueOf(movie.getVoteAverage()));
         detailsBinding.content.movieRating.setText(rating);
+    }
+
+    private String getPosterUrl(String posterPath) {
+        return String.format(getString(R.string.poster_base_url),
+                ConstantMoviePosterSizes.getOriginal(), posterPath);
     }
 
     @Nullable

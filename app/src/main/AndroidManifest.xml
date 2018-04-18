@@ -25,6 +25,10 @@
         <activity
             android:name=".details.MovieDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <provider
+            android:name="com.example.android.popularmovies.data.FavoriteMoviesContentProvider"
+            android:authorities="com.example.android.popularmovies"
+            android:exported="false"/>
     </application>
 
 </manifest>
