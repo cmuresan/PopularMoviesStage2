@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Popular Movies</string>
     <string name="api_erorr">There was an error fetching the data. Please try again.</string>
+    <string name="videos_erorr">There was an error fetching the videos. Please try again.</string>
+    <string name="reviews_erorr">There was an error fetching the reviews. Please try again.</string>
+    <string name="image_error">There was an error fetching the movie poster.</string>
     <string name="poster_base_url">http://image.tmdb.org/t/p/%s%s</string>
     <string name="movie_poster">Movie poster</string>
     <string name="top_rated">Top Rated</string>
@@ -8,5 +11,10 @@
     <string name="favorites">Favorites</string>
     <string name="loading">Loading…</string>
     <string name="movie_rating_template">%s/10</string>
+    <string name="action_settings">Settings</string>
+    <string name="videos">Videos</string>
+    <string name="reviews">Reviews</string>
+    <string name="ok">Ok</string>
+    <string name="share_video">Share video</string>
 
 </resources>

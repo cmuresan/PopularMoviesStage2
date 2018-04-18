@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/item_video_width"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/review_content"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/rounded_background"
+        android:maxLines="5"
+        android:ellipsize="end"
+        android:padding="@dimen/padding_small"
+        android:textColor="@android:color/white" />
+</android.support.constraint.ConstraintLayout>

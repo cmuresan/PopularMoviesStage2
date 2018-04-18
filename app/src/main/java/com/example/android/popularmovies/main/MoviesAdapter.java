@@ -61,8 +61,12 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
         void bindData(final Movie movie) {
             String posterUrl = String.format(context.getString(R.string.poster_base_url),
-                    ConstantMoviePosterSizes.getW342(), movie.getPoster_path());
-            Picasso.with(context).load(posterUrl).into(movieThumbnail);
+                    ConstantMoviePosterSizes.getW342(), movie.getPosterPath());
+            Picasso.with(context)
+                    .load(posterUrl)
+                    .placeholder(R.drawable.ic_movie_placeholder)
+                    .error(R.string.image_error)
+                    .into(movieThumbnail);
 
             movieThumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
