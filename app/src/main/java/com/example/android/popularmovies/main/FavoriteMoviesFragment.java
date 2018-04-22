@@ -39,11 +39,6 @@ public class FavoriteMoviesFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -62,11 +57,6 @@ public class FavoriteMoviesFragment extends Fragment {
             movies = savedInstanceState.getParcelableArrayList(FAVORITE_MOVIES_KEY);
             moviesAdapter.setMovies(this.movies);
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     private void setupRecyclerView(Context context, View view) {
@@ -94,7 +84,6 @@ public class FavoriteMoviesFragment extends Fragment {
     }
 
     private void getMovies() {
-        int nextPage = 1;
         Cursor cursor = getContext().getContentResolver().query(FavoriteMoviesContract.MovieEntry.CONTENT_URI,
                 null,
                 null,

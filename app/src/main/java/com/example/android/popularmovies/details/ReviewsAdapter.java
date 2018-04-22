@@ -48,7 +48,7 @@ class ReviewsAdapter extends RecyclerView.Adapter<ReviewsAdapter.ViewHolder> {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView content;
+        private final TextView content;
 
         ViewHolder(View itemView) {
             super(itemView);

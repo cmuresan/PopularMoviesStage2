@@ -145,15 +145,13 @@ public class MovieDetailsActivity extends AppCompatActivity {
         uri = uri.buildUpon().appendPath(String.valueOf(id)).build();
 
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-        handleFabButton(cursor);
+        if (cursor != null) {
+            handleFabButton(cursor);
+        }
     }
 
     private void handleFabButton(Cursor cursor) {
-        if (cursor.getCount() > 0) {
-            isMovieFav = true;
-        } else {
-            isMovieFav = false;
-        }
+        isMovieFav = cursor.getCount() > 0;
         setFabImageResource();
     }
 
