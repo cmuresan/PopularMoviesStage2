@@ -16,5 +16,9 @@
     <string name="reviews">Reviews</string>
     <string name="ok">Ok</string>
     <string name="share_video">Share video</string>
+    <string name="could_not_save_movie">Could not save movie</string>
+    <string name="deleted_movie">Deleted</string>
+    <string name="saved_movie">Saved</string>
+    <string name="action">Action</string>
 
 </resources>

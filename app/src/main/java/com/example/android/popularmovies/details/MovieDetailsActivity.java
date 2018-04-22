@@ -66,8 +66,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Movie movie = getIntentData();
                 if (movie == null) {
-                    Snackbar.make(view, "Could not save movie", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    Snackbar.make(view, R.string.could_not_save_movie, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.action, null).show();
                     return;
                 }
                 if (isMovieFav) {
@@ -77,8 +77,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     int id = getContentResolver().delete(uri, null, null);
                     if (id != 0) {
                         isMovieFav = false;
-                        Snackbar.make(view, "Deleted", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
+                        Snackbar.make(view, R.string.deleted_movie, Snackbar.LENGTH_LONG)
+                                .setAction(R.string.action, null).show();
                     }else {
                         isMovieFav = true;
                     }
@@ -96,8 +96,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
                     Uri uri = getContentResolver().insert(FavoriteMoviesContract.MovieEntry.CONTENT_URI, contentValues);
 
                     if (uri != null) {
-                        Snackbar.make(view, "Saved", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
+                        Snackbar.make(view, R.string.saved_movie, Snackbar.LENGTH_LONG)
+                                .setAction(R.string.action, null).show();
                         isMovieFav = true;
                     }
                 }
