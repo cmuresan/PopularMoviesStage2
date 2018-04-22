@@ -28,6 +28,7 @@ class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder> {
 
     public void setVideos(List<Video> videos) {
         this.videos = new ArrayList<>(videos);
+        notifyDataSetChanged();
     }
 
     @NonNull

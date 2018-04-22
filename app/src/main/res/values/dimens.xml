@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="margin_default">16dp</dimen>
-    <dimen name="text_size_large">18sp</dimen>
-    <dimen name="collapsed_toolbar_text_size">18sp</dimen>
-    <dimen name="expanded_toolbar_text_size">24sp</dimen>
     <dimen name="divider_size">1dp</dimen>
     <dimen name="space_divider_size">4dp</dimen>
     <dimen name="app_bar_height">280dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="text_margin">16dp</dimen>
     <dimen name="videos_section_height">100dp</dimen>
-    <dimen name="reviews_section_height">150dp</dimen>
     <dimen name="corner_radius">10dp</dimen>
     <dimen name="item_video_width">150dp</dimen>
-    <dimen name="item_reviews_width">200dp</dimen>
     <dimen name="padding_small">8dp</dimen>
 </resources>

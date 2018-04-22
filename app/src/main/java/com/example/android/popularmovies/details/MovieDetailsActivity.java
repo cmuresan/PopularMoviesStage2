@@ -83,7 +83,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             getVideos(movie.getId());
         } else {
             videos = savedInstanceState.getParcelableArrayList(VIDEOS_KEY);
-            videosAdapter.setVideos(videos);
+            handleSuccessfulVideosFetching();
         }
     }
 
@@ -92,7 +92,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
             getReviews(movie.getId());
         } else {
             reviews = savedInstanceState.getParcelableArrayList(REVIEWS_KEY);
-            reviewsAdapter.setReviews(reviews);
+            handleSuccessfulReviewsFetching();
         }
     }
 
@@ -244,10 +244,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private final CallbackInterface<VideosApiResponse> videosApiResponseCallbackInterface = new CallbackInterface<VideosApiResponse>() {
         @Override
         public void success(VideosApiResponse response) {
-            detailsBinding.content.videosHeader.setVisibility(View.VISIBLE);
-            detailsBinding.content.videosRecyclerView.setVisibility(View.VISIBLE);
             videos = response.getResults();
-            videosAdapter.setVideos(videos);
+            handleSuccessfulVideosFetching();
         }
 
         @Override
@@ -258,13 +256,19 @@ public class MovieDetailsActivity extends AppCompatActivity {
         }
     };
 
+    private void handleSuccessfulVideosFetching() {
+        if (!videos.isEmpty()) {
+            detailsBinding.content.videosHeader.setVisibility(View.VISIBLE);
+            detailsBinding.content.videosRecyclerView.setVisibility(View.VISIBLE);
+        }
+        videosAdapter.setVideos(videos);
+    }
+
     private final CallbackInterface<ReviewsApiResponse> reviewsApiResponseCallbackInterface = new CallbackInterface<ReviewsApiResponse>() {
         @Override
         public void success(ReviewsApiResponse response) {
-            detailsBinding.content.reviewsHeader.setVisibility(View.VISIBLE);
-            detailsBinding.content.reviewsRecyclerView.setVisibility(View.VISIBLE);
             reviews = response.getResults();
-            reviewsAdapter.setReviews(reviews);
+            handleSuccessfulReviewsFetching();
         }
 
         @Override
@@ -274,6 +278,14 @@ public class MovieDetailsActivity extends AppCompatActivity {
             Toast.makeText(MovieDetailsActivity.this, getString(R.string.reviews_erorr), Toast.LENGTH_SHORT).show();
         }
     };
+
+    private void handleSuccessfulReviewsFetching() {
+        if (!reviews.isEmpty()) {
+            detailsBinding.content.reviewsHeader.setVisibility(View.VISIBLE);
+            detailsBinding.content.reviewsRecyclerView.setVisibility(View.VISIBLE);
+        }
+        reviewsAdapter.setReviews(reviews);
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
