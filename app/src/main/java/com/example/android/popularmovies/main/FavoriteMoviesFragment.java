@@ -66,7 +66,9 @@ public class FavoriteMoviesFragment extends Fragment {
 
     private void setupRecyclerView(Context context, View view) {
         RecyclerView recyclerView = view.findViewById(R.id.popular_movies_recycler_view);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, NUMBER_OF_COLUMNS);
+        ColumnsProvider columnsProvider = new ColumnsProviderImpl();
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context,
+                columnsProvider.getNumberOfColumns(getActivity()));
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
 
