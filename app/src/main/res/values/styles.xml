@@ -16,14 +16,4 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="Toolbar.CollapsedTitleTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/collapsed_toolbar_text_size</item>
-    </style>
-
-    <style name="Toolbar.ExpandedTitleTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textColor">@color/colorAccent</item>
-        <item name="android:textSize">@dimen/expanded_toolbar_text_size</item>
-    </style>
 </resources>

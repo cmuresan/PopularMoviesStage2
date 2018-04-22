@@ -1,7 +1,6 @@
 package com.example.android.popularmovies.main;
 
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -26,9 +25,9 @@ import java.util.ArrayList;
 
 
 public class FavoriteMoviesFragment extends Fragment {
-    private static final int NUMBER_OF_COLUMNS = 3;
+    private static final String FAVORITE_MOVIES_KEY = "FavoriteMoviesFragment.FAVORITE_MOVIES_KEY";
     private MoviesAdapter moviesAdapter;
-    private ProgressDialog progressDialog;
+    private ArrayList<Movie> movies;
 
     public FavoriteMoviesFragment() {
         // Required empty public constructor
@@ -40,15 +39,10 @@ public class FavoriteMoviesFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_popular_movies, container, false);
+        return inflater.inflate(R.layout.fragment_movies, container, false);
     }
 
     @Override
@@ -56,17 +50,20 @@ public class FavoriteMoviesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         setupRecyclerView(getContext(), view);
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        getMovies();
+        if (savedInstanceState == null || !savedInstanceState.containsKey(FAVORITE_MOVIES_KEY)) {
+            getMovies();
+        }else{
+            movies = savedInstanceState.getParcelableArrayList(FAVORITE_MOVIES_KEY);
+            moviesAdapter.setMovies(this.movies);
+        }
     }
 
     private void setupRecyclerView(Context context, View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.popular_movies_recycler_view);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, NUMBER_OF_COLUMNS);
+        RecyclerView recyclerView = view.findViewById(R.id.movies_recycler_view);
+        ColumnsProvider columnsProvider = new ColumnsProviderImpl();
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context,
+                columnsProvider.getNumberOfColumns(getActivity()));
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
 
@@ -87,7 +84,6 @@ public class FavoriteMoviesFragment extends Fragment {
     }
 
     private void getMovies() {
-        int nextPage = 1;
         Cursor cursor = getContext().getContentResolver().query(FavoriteMoviesContract.MovieEntry.CONTENT_URI,
                 null,
                 null,
@@ -97,7 +93,7 @@ public class FavoriteMoviesFragment extends Fragment {
             Toast.makeText(getContext(), getContext().getString(R.string.api_erorr), Toast.LENGTH_SHORT).show();
             return;
         }
-        ArrayList<Movie> movies = getMoviesFromCursor(cursor);
+        movies = getMoviesFromCursor(cursor);
         moviesAdapter.setMovies(movies);
     }
 
@@ -125,5 +121,11 @@ public class FavoriteMoviesFragment extends Fragment {
             cursor.moveToNext();
         }
         return movies;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(FAVORITE_MOVIES_KEY, movies);
     }
 }

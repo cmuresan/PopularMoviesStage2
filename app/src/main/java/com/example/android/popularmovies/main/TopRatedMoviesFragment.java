@@ -17,16 +17,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.android.networkmodule.model.Movie;
 import com.example.android.networkmodule.model.MoviesApiResponse;
 import com.example.android.networkmodule.network.ApiImpl;
 import com.example.android.networkmodule.network.CallbackInterface;
 import com.example.android.popularmovies.R;
 
+import java.util.ArrayList;
+
 public class TopRatedMoviesFragment extends Fragment {
 
-    private static final int NUMBER_OF_COLUMNS = 3;
+    private static final String TOP_RATED_MOVIES_KEY = "TopRatedMoviesFragment.TOP_RATED_MOVIES_KEY";
     private MoviesAdapter moviesAdapter;
     private ProgressDialog progressDialog;
+    private ArrayList<Movie> movies;
 
     public TopRatedMoviesFragment() {
         // Required empty public constructor
@@ -38,15 +42,10 @@ public class TopRatedMoviesFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_top_rated_movies, container, false);
+        return inflater.inflate(R.layout.fragment_movies, container, false);
     }
 
     @Override
@@ -54,12 +53,19 @@ public class TopRatedMoviesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         setupRecyclerView(getContext(), view);
-        getMovies();
+        if (savedInstanceState == null || !savedInstanceState.containsKey(TOP_RATED_MOVIES_KEY)) {
+            getMovies();
+        } else {
+            movies = savedInstanceState.getParcelableArrayList(TOP_RATED_MOVIES_KEY);
+            moviesAdapter.setMovies(movies);
+        }
     }
 
     private void setupRecyclerView(Context context, View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.top_rated_movies_recycler_view);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, NUMBER_OF_COLUMNS);
+        RecyclerView recyclerView = view.findViewById(R.id.movies_recycler_view);
+        ColumnsProvider columnsProvider = new ColumnsProviderImpl();
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context,
+                columnsProvider.getNumberOfColumns(getActivity()));
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
 
@@ -95,7 +101,8 @@ public class TopRatedMoviesFragment extends Fragment {
         @Override
         public void success(MoviesApiResponse response) {
             cancelProgressDialog();
-            moviesAdapter.setMovies(response.getResults());
+            movies = response.getResults();
+            moviesAdapter.setMovies(movies);
         }
 
         @Override
@@ -109,5 +116,11 @@ public class TopRatedMoviesFragment extends Fragment {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(TOP_RATED_MOVIES_KEY, movies);
     }
 }

@@ -17,12 +17,12 @@ import static com.example.android.popularmovies.data.FavoriteMoviesContract.Movi
 
 public class FavoriteMoviesContentProvider extends ContentProvider {
 
-    public static final int MOVIES = 100;
-    public static final int MOVIE_WITH_ID = 101;
+    private static final int MOVIES = 100;
+    private static final int MOVIE_WITH_ID = 101;
 
     private static final UriMatcher uriMathcher = buildUriMatcher();
 
-    public static UriMatcher buildUriMatcher() {
+    private static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
         uriMatcher.addURI(FavoriteMoviesContract.AUTHORITY, FavoriteMoviesContract.PATH_MOVIES, MOVIES);

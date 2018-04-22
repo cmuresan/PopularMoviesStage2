@@ -8,15 +8,8 @@ import android.app.Application;
 
 public class MovieApplication extends Application {
 
-    private static MovieApplication applicationContext;
-
-    public static MovieApplication getContext() {
-        return applicationContext;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
-        applicationContext = this;
     }
 }

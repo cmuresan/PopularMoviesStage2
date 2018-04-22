@@ -28,6 +28,7 @@ class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder> {
 
     public void setVideos(List<Video> videos) {
         this.videos = new ArrayList<>(videos);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -48,8 +49,8 @@ class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.ViewHolder> {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView title;
-        private ImageView share;
+        private final TextView title;
+        private final ImageView share;
 
         ViewHolder(View itemView) {
             super(itemView);
