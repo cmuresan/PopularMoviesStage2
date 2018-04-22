@@ -50,7 +50,7 @@ public class TopRatedMoviesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_top_rated_movies, container, false);
+        return inflater.inflate(R.layout.fragment_movies, container, false);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class TopRatedMoviesFragment extends Fragment {
     }
 
     private void setupRecyclerView(Context context, View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.top_rated_movies_recycler_view);
+        RecyclerView recyclerView = view.findViewById(R.id.movies_recycler_view);
         ColumnsProvider columnsProvider = new ColumnsProviderImpl();
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context,
                 columnsProvider.getNumberOfColumns(getActivity()));
