@@ -1,6 +1,5 @@
 package com.example.android.popularmovies.main;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -13,10 +12,8 @@ import com.example.android.popularmovies.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int NUMBER_OF_COLUMNS = 3;
-    private MoviesAdapter moviesAdapter;
-    private boolean isPopularSelected = true;
-    private ProgressDialog progressDialog;
+    private static final String MAIN_ACTIVITY_ROTATED_KEY = "MainActivity.MAIN_ACTIVITY_ROTATED_KEY";
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +21,17 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setupBottomNavigation();
+        if (savedInstanceState == null || !savedInstanceState.containsKey(MAIN_ACTIVITY_ROTATED_KEY)) {
+            bottomNavigationView.setSelectedItemId(R.id.action_popular);
+        }
     }
 
     private void setupBottomNavigation() {
-        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
+        bottomNavigationView = findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Fragment fragment = null;
+                Fragment fragment;
                 switch (item.getItemId()) {
                     case R.id.action_popular:
                         fragment = PopularMoviesFragment.newInstance();
@@ -52,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        bottomNavigationView.setSelectedItemId(R.id.action_popular);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(MAIN_ACTIVITY_ROTATED_KEY, true);
     }
 }

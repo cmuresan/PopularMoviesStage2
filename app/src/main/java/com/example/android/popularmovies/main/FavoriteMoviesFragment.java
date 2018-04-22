@@ -1,7 +1,6 @@
 package com.example.android.popularmovies.main;
 
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -26,9 +25,9 @@ import java.util.ArrayList;
 
 
 public class FavoriteMoviesFragment extends Fragment {
-    private static final int NUMBER_OF_COLUMNS = 3;
+    private static final String FAVORITE_MOVIES_KEY = "FavoriteMoviesFragment.FAVORITE_MOVIES_KEY";
     private MoviesAdapter moviesAdapter;
-    private ProgressDialog progressDialog;
+    private ArrayList<Movie> movies;
 
     public FavoriteMoviesFragment() {
         // Required empty public constructor
@@ -56,12 +55,18 @@ public class FavoriteMoviesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         setupRecyclerView(getContext(), view);
+
+        if (savedInstanceState == null || !savedInstanceState.containsKey(FAVORITE_MOVIES_KEY)) {
+            getMovies();
+        }else{
+            movies = savedInstanceState.getParcelableArrayList(FAVORITE_MOVIES_KEY);
+            moviesAdapter.setMovies(this.movies);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getMovies();
     }
 
     private void setupRecyclerView(Context context, View view) {
@@ -99,7 +104,7 @@ public class FavoriteMoviesFragment extends Fragment {
             Toast.makeText(getContext(), getContext().getString(R.string.api_erorr), Toast.LENGTH_SHORT).show();
             return;
         }
-        ArrayList<Movie> movies = getMoviesFromCursor(cursor);
+        movies = getMoviesFromCursor(cursor);
         moviesAdapter.setMovies(movies);
     }
 
@@ -127,5 +132,11 @@ public class FavoriteMoviesFragment extends Fragment {
             cursor.moveToNext();
         }
         return movies;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(FAVORITE_MOVIES_KEY, movies);
     }
 }

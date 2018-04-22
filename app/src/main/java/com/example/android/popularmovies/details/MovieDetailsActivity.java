@@ -18,7 +18,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.android.networkmodule.model.Movie;
+import com.example.android.networkmodule.model.Review;
 import com.example.android.networkmodule.model.ReviewsApiResponse;
+import com.example.android.networkmodule.model.Video;
 import com.example.android.networkmodule.model.VideosApiResponse;
 import com.example.android.networkmodule.network.ApiImpl;
 import com.example.android.networkmodule.network.ApiInterface;
@@ -29,13 +31,21 @@ import com.example.android.popularmovies.data.FavoriteMoviesContract;
 import com.example.android.popularmovies.databinding.ActivityMovieDetailsBinding;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 public class MovieDetailsActivity extends AppCompatActivity {
 
     public static final String EXTRA_MOVIE = "MovieDetailsActivity.EXTRA_MOVIE";
+    private static final String MOVIE_KEY = "MovieDetailsActivity.MOVIE_KEY";
+    private static final String VIDEOS_KEY = "MovieDetailsActivity.VIDEOS_KEY";
+    private static final String REVIEWS_KEY = "MovieDetailsActivity.REVIEWS_KEY";
     private ActivityMovieDetailsBinding detailsBinding;
     private VideosAdapter videosAdapter;
     private ReviewsAdapter reviewsAdapter;
     private boolean isMovieFav = false;
+    private Movie movie;
+    private ArrayList<Video> videos;
+    private ArrayList<Review> reviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +57,42 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Movie movie = getIntentData();
+        fetchMovie(savedInstanceState);
         if (movie != null) {
             handleFab(movie.getId());
             setupVideosRecyclerView();
             setupReviewsRecyclerView();
             bindData(movie);
-            getVideos(movie.getId());
-            getReviews(movie.getId());
+            fetchVideos(savedInstanceState);
+            fetchReviews(savedInstanceState);
         } else {
             Toast.makeText(this, getString(R.string.api_erorr), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void fetchMovie(Bundle savedInstanceState) {
+        if (savedInstanceState == null || savedInstanceState.containsKey(MOVIE_KEY)) {
+            movie = getIntentData();
+        } else {
+            movie = savedInstanceState.getParcelable(MOVIE_KEY);
+        }
+    }
+
+    private void fetchVideos(Bundle savedInstanceState) {
+        if (savedInstanceState == null || !savedInstanceState.containsKey(VIDEOS_KEY)) {
+            getVideos(movie.getId());
+        } else {
+            videos = savedInstanceState.getParcelableArrayList(VIDEOS_KEY);
+            videosAdapter.setVideos(videos);
+        }
+    }
+
+    private void fetchReviews(Bundle savedInstanceState) {
+        if (savedInstanceState == null || !savedInstanceState.containsKey(REVIEWS_KEY)) {
+            getReviews(movie.getId());
+        } else {
+            reviews = savedInstanceState.getParcelableArrayList(REVIEWS_KEY);
+            reviewsAdapter.setReviews(reviews);
         }
     }
 
@@ -79,7 +115,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                         isMovieFav = false;
                         Snackbar.make(view, R.string.deleted_movie, Snackbar.LENGTH_LONG)
                                 .setAction(R.string.action, null).show();
-                    }else {
+                    } else {
                         isMovieFav = true;
                     }
                 } else {
@@ -205,13 +241,13 @@ public class MovieDetailsActivity extends AppCompatActivity {
         return null;
     }
 
-    private static final String TAG = "MovieDetailsActivity";
     private final CallbackInterface<VideosApiResponse> videosApiResponseCallbackInterface = new CallbackInterface<VideosApiResponse>() {
         @Override
         public void success(VideosApiResponse response) {
             detailsBinding.content.videosHeader.setVisibility(View.VISIBLE);
             detailsBinding.content.videosRecyclerView.setVisibility(View.VISIBLE);
-            videosAdapter.setVideos(response.getResults());
+            videos = response.getResults();
+            videosAdapter.setVideos(videos);
         }
 
         @Override
@@ -227,7 +263,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
         public void success(ReviewsApiResponse response) {
             detailsBinding.content.reviewsHeader.setVisibility(View.VISIBLE);
             detailsBinding.content.reviewsRecyclerView.setVisibility(View.VISIBLE);
-            reviewsAdapter.setReviews(response.getResults());
+            reviews = response.getResults();
+            reviewsAdapter.setReviews(reviews);
         }
 
         @Override
@@ -237,4 +274,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
             Toast.makeText(MovieDetailsActivity.this, getString(R.string.reviews_erorr), Toast.LENGTH_SHORT).show();
         }
     };
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(MOVIE_KEY, movie);
+        outState.putParcelableArrayList(VIDEOS_KEY, videos);
+        outState.putParcelableArrayList(REVIEWS_KEY, reviews);
+    }
 }

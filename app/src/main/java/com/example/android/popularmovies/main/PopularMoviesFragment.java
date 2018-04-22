@@ -17,16 +17,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.android.networkmodule.model.Movie;
 import com.example.android.networkmodule.model.MoviesApiResponse;
 import com.example.android.networkmodule.network.ApiImpl;
 import com.example.android.networkmodule.network.CallbackInterface;
 import com.example.android.popularmovies.R;
 
+import java.util.ArrayList;
+
 public class PopularMoviesFragment extends Fragment {
 
-    private static final int NUMBER_OF_COLUMNS = 3;
+    private static final String POPULAR_MOVIES_KEY = "PopularMoviesFragment.POPULAR_MOVIES_KEY";
     private MoviesAdapter moviesAdapter;
     private ProgressDialog progressDialog;
+    private ArrayList<Movie> movies;
 
     public PopularMoviesFragment() {
         // Required empty public constructor
@@ -54,7 +58,12 @@ public class PopularMoviesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         setupRecyclerView(getContext(), view);
-        getMovies();
+        if (savedInstanceState == null || !savedInstanceState.containsKey(POPULAR_MOVIES_KEY)) {
+            getMovies();
+        } else {
+            movies = savedInstanceState.getParcelableArrayList(POPULAR_MOVIES_KEY);
+            moviesAdapter.setMovies(movies);
+        }
     }
 
     private void setupRecyclerView(Context context, View view) {
@@ -97,7 +106,8 @@ public class PopularMoviesFragment extends Fragment {
         @Override
         public void success(MoviesApiResponse response) {
             cancelProgressDialog();
-            moviesAdapter.setMovies(response.getResults());
+            movies = response.getResults();
+            moviesAdapter.setMovies(movies);
         }
 
         @Override
@@ -111,5 +121,11 @@ public class PopularMoviesFragment extends Fragment {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(POPULAR_MOVIES_KEY, movies);
     }
 }
